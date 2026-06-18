@@ -30,6 +30,8 @@ class _MapScreenState extends State<MapScreen> {
   String? _selectedDrawingMode; // 'Farm', 'Pipeline', 'Tree', 'Valve', 'Pump', 'Tank', 'Infrastructure'
   String? _selectedInfraGeom; // 'Point', 'LineString', 'Polygon'
   bool _quickAutoSave = true; // Default to true for fast walk-and-pin mapping without dialogs
+  bool _isPanelExpanded = true; // Track if the bottom controls panel is expanded
+
 
   @override
   void initState() {
@@ -389,8 +391,44 @@ class _MapScreenState extends State<MapScreen> {
                                       borderStrokeWidth: 2,
                                       isFilled: true,
                                     ));
-                                  }
                                 }
+
+                                // 7. Draw user's current GPS location marker
+                                markers.add(Marker(
+                                  point: _initialLocation,
+                                  width: 44,
+                                  height: 44,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        width: 28,
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF3B82F6).withOpacity(0.35),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 14,
+                                        height: 14,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF3B82F6),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: Colors.white, width: 2),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ));
+
 
                                 return FlutterMap(
                                   mapController: _mapController,
@@ -467,166 +505,224 @@ class _MapScreenState extends State<MapScreen> {
 
   Widget _buildControlsPanel(MappingState mapState) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withOpacity(0.9),
+        color: const Color(0xFF1E293B).withOpacity(0.95),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Select Drawing Mode',
-            style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: [
-              _buildModeChip('Farm Boundary (Polygon)', 'Farm', Icons.landscape),
-              _buildModeChip('Pipeline Path (LineString)', 'Pipeline', Icons.linear_scale),
-              _buildModeChip('Moringa Tree (Point)', 'Tree', Icons.forest),
-              _buildModeChip('Valve (Point)', 'Valve', Icons.adjust),
-              _buildModeChip('Pump (Point)', 'Pump', Icons.flash_on),
-              _buildModeChip('Tank (Point)', 'Tank', Icons.opacity),
-              _buildModeChip('Infrastructure', 'Infrastructure', Icons.business),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Divider(color: Colors.white12),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Pin Asset at Current GPS Location',
-                style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Quick Auto-Save',
-                    style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12),
-                  ),
-                  const SizedBox(width: 4),
-                  Switch(
-                    value: _quickAutoSave,
-                    activeColor: const Color(0xFF10B981),
-                    onChanged: (val) {
-                      setState(() {
-                        _quickAutoSave = val;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isPanelExpanded = !_isPanelExpanded;
+              });
+            },
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildQuickGpsPinButton('Tree', Icons.forest, const Color(0xFF10B981), mapState),
-                const SizedBox(width: 8),
-                _buildQuickGpsPinButton('Valve', Icons.adjust, Colors.amber, mapState),
-                const SizedBox(width: 8),
-                _buildQuickGpsPinButton('Pump', Icons.flash_on, Colors.deepPurpleAccent, mapState),
-                const SizedBox(width: 8),
-                _buildQuickGpsPinButton('Tank', Icons.opacity, Colors.blue, mapState),
-                const SizedBox(width: 8),
-                _buildQuickGpsPinButton('Infrastructure', Icons.business, Colors.orange, mapState),
+                Row(
+                  children: [
+                    Icon(
+                      _isPanelExpanded ? Icons.tune : Icons.map,
+                      color: const Color(0xFF10B981),
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      _isPanelExpanded ? 'Drawing & Mapping Controls' : 'Tap to show Mapping Controls',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Icon(
+                  _isPanelExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                  color: Colors.white70,
+                  size: 20,
+                ),
               ],
             ),
           ),
-          if (_selectedDrawingMode != null) ...[
+          if (_isPanelExpanded) ...[
             const SizedBox(height: 12),
-            if (_selectedDrawingMode == 'Infrastructure') ...[
-              const Text('Select Geometry Type:', style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12)),
-              Row(
+            const Text(
+              'Select Drawing Mode',
+              style: TextStyle(color: Color(0xFF94A3B8), fontSize: 11, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 6.0,
+              runSpacing: 6.0,
+              children: [
+                _buildModeChip('Farm', 'Farm', Icons.landscape),
+                _buildModeChip('Pipeline', 'Pipeline', Icons.linear_scale),
+                _buildModeChip('Tree', 'Tree', Icons.forest),
+                _buildModeChip('Valve', 'Valve', Icons.adjust),
+                _buildModeChip('Pump', 'Pump', Icons.flash_on),
+                _buildModeChip('Tank', 'Tank', Icons.opacity),
+                _buildModeChip('Infra', 'Infrastructure', Icons.business),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.0),
+              child: Divider(color: Colors.white12, height: 1),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Pin Asset at GPS Position',
+                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Auto-Save',
+                      style: TextStyle(color: Color(0xFF94A3B8), fontSize: 11),
+                    ),
+                    const SizedBox(width: 2),
+                    SizedBox(
+                      height: 24,
+                      child: Switch(
+                        value: _quickAutoSave,
+                        activeColor: const Color(0xFF10B981),
+                        onChanged: (val) {
+                          setState(() {
+                            _quickAutoSave = val;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
                 children: [
-                  ChoiceChip(
-                    label: const Text('Point'),
-                    selected: _selectedInfraGeom == 'Point',
-                    onSelected: (val) => setState(() => _selectedInfraGeom = val ? 'Point' : null),
-                  ),
-                  const SizedBox(width: 8),
-                  ChoiceChip(
-                    label: const Text('LineString'),
-                    selected: _selectedInfraGeom == 'LineString',
-                    onSelected: (val) => setState(() => _selectedInfraGeom = val ? 'LineString' : null),
-                  ),
-                  const SizedBox(width: 8),
-                  ChoiceChip(
-                    label: const Text('Polygon'),
-                    selected: _selectedInfraGeom == 'Polygon',
-                    onSelected: (val) => setState(() => _selectedInfraGeom = val ? 'Polygon' : null),
-                  ),
+                  _buildQuickGpsPinButton('Tree', 'Tree', Icons.forest, const Color(0xFF10B981), mapState),
+                  const SizedBox(width: 6),
+                  _buildQuickGpsPinButton('Valve', 'Valve', Icons.adjust, Colors.amber, mapState),
+                  const SizedBox(width: 6),
+                  _buildQuickGpsPinButton('Pump', 'Pump', Icons.flash_on, Colors.deepPurpleAccent, mapState),
+                  const SizedBox(width: 6),
+                  _buildQuickGpsPinButton('Tank', 'Tank', Icons.opacity, Colors.blue, mapState),
+                  const SizedBox(width: 6),
+                  _buildQuickGpsPinButton('Infra', 'Infrastructure', Icons.business, Colors.orange, mapState),
                 ],
               ),
-              const SizedBox(height: 8),
-            ],
-            // Drawing Action tools depending on type
-            Row(
-              children: [
-                if (_drawingModeIsSpatialTrace()) ...[
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF10B981)),
-                      onPressed: mapState.isTracking
-                          ? null
-                          : () {
-                              context.read<MappingBloc>().add(
-                                MapStartTrackingEvent(
-                                  geometryType: _selectedDrawingMode == 'Farm' || _selectedInfraGeom == 'Polygon'
-                                      ? 'Polygon'
-                                      : 'LineString',
-                                ),
-                              );
-                            },
-                      icon: const Icon(Icons.directions_walk, color: Colors.white),
-                      label: const Text('Start Walk (GPS)', style: TextStyle(color: Colors.white)),
+            ),
+            if (_selectedDrawingMode != null) ...[
+              const SizedBox(height: 12),
+              if (_selectedDrawingMode == 'Infrastructure') ...[
+                const Text('Select Geometry Type:', style: TextStyle(color: Color(0xFF94A3B8), fontSize: 11)),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    ChoiceChip(
+                      label: const Text('Point', style: TextStyle(fontSize: 11)),
+                      selected: _selectedInfraGeom == 'Point',
+                      onSelected: (val) => setState(() => _selectedInfraGeom = val ? 'Point' : null),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  if (mapState.trackedPoints.isNotEmpty)
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-                      onPressed: () {
-                        context.read<MappingBloc>().add(MapStopTrackingEvent());
-                        _saveTrackedAsset(mapState);
-                      },
-                      child: const Text('Save Draw', style: TextStyle(color: Colors.black)),
+                    const SizedBox(width: 6),
+                    ChoiceChip(
+                      label: const Text('LineString', style: TextStyle(fontSize: 11)),
+                      selected: _selectedInfraGeom == 'LineString',
+                      onSelected: (val) => setState(() => _selectedInfraGeom = val ? 'LineString' : null),
                     ),
-                ] else ...[
-                  const Expanded(
-                    child: Text(
-                      'Tap on map to pin coordinates & fill asset details.',
-                      style: TextStyle(color: Colors.amber, fontSize: 12),
+                    const SizedBox(width: 6),
+                    ChoiceChip(
+                      label: const Text('Polygon', style: TextStyle(fontSize: 11)),
+                      selected: _selectedInfraGeom == 'Polygon',
+                      onSelected: (val) => setState(() => _selectedInfraGeom = val ? 'Polygon' : null),
                     ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+              ],
+              // Drawing Action tools depending on type
+              Row(
+                children: [
+                  if (_drawingModeIsSpatialTrace()) ...[
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF10B981),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
+                        onPressed: mapState.isTracking
+                            ? null
+                            : () {
+                                context.read<MappingBloc>().add(
+                                  MapStartTrackingEvent(
+                                    geometryType: _selectedDrawingMode == 'Farm' || _selectedInfraGeom == 'Polygon'
+                                        ? 'Polygon'
+                                        : 'LineString',
+                                  ),
+                                );
+                              },
+                        icon: const Icon(Icons.directions_walk, color: Colors.white, size: 16),
+                        label: const Text('Start Walk (GPS)', style: TextStyle(color: Colors.white, fontSize: 12)),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    if (mapState.trackedPoints.isNotEmpty)
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                        ),
+                        onPressed: () {
+                          context.read<MappingBloc>().add(MapStopTrackingEvent());
+                          _saveTrackedAsset(mapState);
+                        },
+                        child: const Text('Save Draw', style: TextStyle(color: Colors.black, fontSize: 12)),
+                      ),
+                  ] else ...[
+                    const Expanded(
+                      child: Text(
+                        'Tap on map to pin coordinates & fill asset details.',
+                        style: TextStyle(color: Colors.amber, fontSize: 11),
+                      ),
+                    )
+                  ],
+                  const SizedBox(width: 8),
+                  IconButton(
+                    constraints: const BoxConstraints(),
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(Icons.clear, color: Colors.redAccent, size: 20),
+                    onPressed: () {
+                      context.read<MappingBloc>().add(MapClearTrackingEvent());
+                      setState(() {
+                        _selectedDrawingMode = null;
+                        _selectedInfraGeom = null;
+                      });
+                    },
                   )
                 ],
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.clear, color: Colors.redAccent),
-                  onPressed: () {
-                    context.read<MappingBloc>().add(MapClearTrackingEvent());
-                    setState(() {
-                      _selectedDrawingMode = null;
-                      _selectedInfraGeom = null;
-                    });
-                  },
-                )
-              ],
-            )
+              )
+            ]
           ]
         ],
       ),
     );
   }
+
 
   Widget _buildModeChip(String label, String mode, IconData icon) {
     final isSelected = _selectedDrawingMode == mode;
@@ -754,7 +850,7 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  Widget _buildQuickGpsPinButton(String label, IconData icon, Color color, MappingState mapState) {
+  Widget _buildQuickGpsPinButton(String displayLabel, String assetType, IconData icon, Color color, MappingState mapState) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF0F172A),
@@ -765,11 +861,12 @@ class _MapScreenState extends State<MapScreen> {
           side: BorderSide(color: color.withOpacity(0.4)),
         ),
       ),
-      onPressed: () => _captureAssetAtCurrentLocation(label, mapState),
+      onPressed: () => _captureAssetAtCurrentLocation(assetType, mapState),
       icon: Icon(icon, size: 16, color: color),
-      label: Text(label, style: const TextStyle(fontSize: 12)),
+      label: Text(displayLabel, style: const TextStyle(fontSize: 12)),
     );
   }
+
 
   Future<void> _captureAssetAtCurrentLocation(String type, MappingState mapState) async {
     if (mapState.activeFarmId == null) {
