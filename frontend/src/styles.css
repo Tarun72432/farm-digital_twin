@@ -1,0 +1,347 @@
+/* Google Fonts & Material Icons */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Leaflet GIS Styles */
+@import "leaflet/dist/leaflet.css";
+
+/* Angular Material Prebuilt Theme */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Theme color palette matching reference image 1 */
+  --color-bg: #05080e;              /* Deep space-black page background */
+  --color-sidebar: #090e17;         /* Solid sidebar background */
+  --color-surface: #0c1220;         /* Solid card & inspector container background */
+  --color-border: rgba(255, 255, 255, 0.04);
+  --color-border-strong: rgba(255, 255, 255, 0.08);
+
+  --color-primary: #10b981;         /* Bright Emerald Green */
+  --color-primary-hover: #059669;   /* Lighter emerald hover */
+  --color-accent: #06b6d4;          /* Cyan */
+  --color-warning: #f59e0b;         /* Amber */
+  --color-danger: #ef4444;          /* Rose */
+  --color-violet: #a855f7;          /* Purple */
+
+  --color-fg: #f8fafc;              /* High contrast white text */
+  --color-fg-muted: #94a3b8;        /* Slate 400 text */
+  --color-fg-subtle: #475569;       /* Slate 600 text */
+
+  --radius-card: 16px;
+  --radius-control: 12px;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-elev: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 28px rgba(16, 185, 129, 0.15);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-fast: 150ms;
+  --motion-base: 240ms;
+  --motion-slow: 420ms;
+
+  /* Backward Compatibility Mappings for Layout & Component Styles */
+  --font-primary: var(--font-display);
+  --font-secondary: var(--font-sans);
+
+  --bg-dark-base: var(--color-bg);
+  --bg-dark-surface: var(--color-surface);
+  --bg-dark-card: var(--color-surface);
+  --border-color: var(--color-border);
+  --border-light: var(--color-border-strong);
+
+  --text-primary: var(--color-fg);
+  --text-secondary: var(--color-fg-muted);
+  --text-muted: var(--color-fg-subtle);
+
+  --color-primary-glow: rgba(16, 185, 129, 0.08);
+  --color-accent-glow: rgba(6, 182, 212, 0.08);
+  --color-purple: var(--color-violet);
+
+  --transition-fast: var(--motion-fast) var(--ease-out);
+  --transition-normal: var(--motion-base) var(--ease-out);
+  --transition-slow: var(--motion-slow) var(--ease-out);
+
+  --shadow-sm: var(--shadow-soft);
+  --shadow-md: var(--shadow-elev);
+  --shadow-lg: 0 20px 40px -5px rgba(0, 0, 0, 0.6);
+  --shadow-glow: var(--shadow-glow);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  /* Simple grid background pattern like the reference image map overlay */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-color: var(--color-bg);
+}
+
+::selection { background: rgba(16, 185, 129, 0.3); color: var(--color-fg); }
+
+/* Scrollbar */
+* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.08) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+/* ---- Custom CSS Utility Classes -------------------------------------- */
+
+.glass-panel {
+  background: rgba(12, 18, 32, 0.7);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-elev);
+}
+
+.hover-lift {
+  transition: transform var(--motion-base) var(--ease-out),
+              box-shadow var(--motion-base) var(--ease-out),
+              border-color var(--motion-base) var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-elev), var(--shadow-glow);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary);
+}
+
+/* ---- Background decoration ------------------------------------------- */
+.background-decor {
+  display: none; /* Removed light glowing orbs to match the solid dark reference theme */
+}
+
+/* ---- Leaflet Override styles ----------------------------------------- */
+
+.leaflet-container {
+  background: var(--color-bg) !important;
+  font-family: var(--font-sans) !important;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--color-surface) !important;
+  color: var(--color-fg) !important;
+  border: 1px solid var(--color-border-strong) !important;
+  box-shadow: var(--shadow-elev) !important;
+  border-radius: 12px !important;
+}
+.leaflet-popup-content h3 { margin: 0 0 0.5rem; font-weight: 700; font-size: 0.95rem; color: var(--color-primary); }
+.leaflet-popup-content p  { margin: 0.25rem 0; font-size: 0.825rem; color: var(--color-fg-muted); }
+
+.leaflet-bar {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-elev) !important;
+}
+.leaflet-bar a {
+  background: var(--color-surface) !important;
+  color: var(--color-fg) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.leaflet-bar a:hover { background: var(--color-primary) !important; color: #05080e !important; }
+
+/* ---- Angular Material global skins ----------------------------------- */
+
+.mat-mdc-card {
+  background: var(--color-surface) !important;
+  color: var(--color-fg) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-elev) !important;
+  overflow: hidden;
+  transition: transform var(--motion-base) var(--ease-out),
+              box-shadow var(--motion-base) var(--ease-out);
+}
+
+.mat-mdc-text-field-wrapper {
+  background: #090f19 !important;
+  border-radius: var(--radius-control) !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+  border-color: var(--color-border-strong) !important;
+  transition: border-color var(--motion-fast) var(--ease-out);
+}
+.mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline > * {
+  border-color: var(--color-fg-subtle) !important;
+}
+.mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline > * {
+  border-color: var(--color-primary) !important;
+  border-width: 1.5px !important;
+}
+
+.mat-mdc-form-field-label,
+.mat-mdc-form-field mat-icon { color: var(--color-fg-muted) !important; }
+.mat-mdc-form-field-focus-active .mat-mdc-form-field-label,
+.mat-mdc-form-field-focus-active mat-icon { color: var(--color-primary) !important; }
+.mat-mdc-form-field input,
+.mat-mdc-form-field textarea {
+  color: var(--color-fg) !important;
+  caret-color: var(--color-primary) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.mat-mdc-select-value { color: var(--color-fg) !important; }
+.mat-mdc-select-arrow { color: var(--color-fg-muted) !important; }
+.mat-mdc-select-panel {
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border-strong) !important;
+  border-radius: var(--radius-control) !important;
+  box-shadow: var(--shadow-elev) !important;
+}
+.mat-mdc-option { color: var(--color-fg-muted) !important; font-family: var(--font-sans) !important; }
+.mat-mdc-option:hover:not(.mdc-list-item--disabled),
+.mat-mdc-option.mdc-list-item--highlighted:not(.mdc-list-item--disabled) {
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: var(--color-fg) !important;
+}
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Tables */
+.dark-table { width: 100%; background: transparent !important; border-collapse: separate; border-spacing: 0; }
+
+.mat-mdc-header-cell {
+  color: var(--color-fg-muted) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  font-size: 11px !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid var(--color-border-strong) !important;
+  padding: 14px 16px !important;
+}
+.mat-mdc-cell {
+  color: var(--color-fg) !important;
+  font-family: var(--font-sans) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  font-size: 13.5px !important;
+  padding: 16px !important;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.clickable-row { transition: transform var(--motion-fast) var(--ease-out); }
+.clickable-row:hover { transform: translateX(2px); }
+.clickable-row:hover .mat-mdc-cell { background: rgba(255, 255, 255, 0.01) !important; }
+
+/* Status / Health Badges */
+.type-tag {
+  font-size: 11px;
+  font-family: var(--font-sans);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: var(--color-fg-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+}
+
+.status-badge, .health-badge {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent;
+}
+.status-badge::before, .health-badge::before {
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; box-shadow: 0 0 6px currentColor;
+}
+.status-badge.active, .status-badge.open, .status-badge.on,
+.status-badge.healthy, .health-badge.healthy {
+  background: rgba(16, 185, 129, 0.1) !important; color: var(--color-primary) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+.status-badge.inactive, .status-badge.closed, .status-badge.off, .health-badge.dead {
+  background: rgba(148, 163, 184, 0.1) !important; color: var(--color-fg-muted) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
+}
+.status-badge.stressed, .health-badge.stressed {
+  background: rgba(245, 158, 11, 0.1) !important; color: var(--color-warning) !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
+}
+.status-badge.damaged, .status-badge.leaking,
+.status-badge.diseased, .health-badge.diseased {
+  background: rgba(239, 68, 68, 0.1) !important; color: var(--color-danger) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* Buttons */
+.mat-mdc-flat-button.mat-primary {
+  background: var(--color-primary) !important;
+  color: #05080e !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+  border-radius: var(--radius-control) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  transition: transform var(--motion-base) var(--ease-out),
+              box-shadow var(--motion-base) var(--ease-out);
+}
+.mat-mdc-flat-button.mat-primary:hover:not([disabled]) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
+}
+
+.mat-mdc-outlined-button {
+  border-color: var(--color-border-strong) !important;
+  color: var(--color-fg-muted) !important;
+  border-radius: var(--radius-control) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+}
+.mat-mdc-outlined-button:hover {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: var(--color-fg-muted) !important;
+}
+
+/* Animations */
+@keyframes float {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(0, -8px, 0) rotate(90deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(180deg); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50%      { opacity: 0.22; transform: scale(1.05); }
+}

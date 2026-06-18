@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:17-3.5
+    container_name: farm-twin-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Employee@123
+      POSTGRES_DB: farm_twin
+    ports:
+      - "5436:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+    driver: local
