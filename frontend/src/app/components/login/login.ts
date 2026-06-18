@@ -31,50 +31,55 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         <div class="glow-orb orb-3"></div>
       </div>
       
-      <mat-card class="login-card glass-panel hover-glow">
-        <mat-card-header class="login-header">
+      <div class="login-card glass-panel hover-glow">
+        <div class="login-header">
           <div class="logo-container">
             <mat-icon class="logo-icon">spatial_tracking</mat-icon>
           </div>
-          <mat-card-title class="app-title">Moringa Twin</mat-card-title>
-          <mat-card-subtitle class="app-subtitle">Farm Digital Twin Platform</mat-card-subtitle>
-        </mat-card-header>
+          <h1 class="app-title">Moringa Twin</h1>
+          <p class="app-subtitle">Farm Digital Twin Platform</p>
+        </div>
 
-        <mat-card-content class="login-content">
+        <div class="login-content">
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Username</mat-label>
-              <input matInput formControlName="username" placeholder="Enter username" autocomplete="username">
-              <mat-icon matSuffix>person</mat-icon>
-              <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+            <div class="input-group" [class.has-error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+              <label class="input-label">Username</label>
+              <div class="input-wrapper">
+                <mat-icon class="input-icon">person</mat-icon>
+                <input type="text" formControlName="username" placeholder="Enter username" autocomplete="username">
+              </div>
+              <div class="error-msg" *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
                 Username is required
-              </mat-error>
-            </mat-form-field>
+              </div>
+            </div>
  
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Password</mat-label>
-              <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Enter password">
-              <button mat-icon-button matSuffix (click)="togglePassword($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
-                <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            <div class="input-group" [class.has-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <label class="input-label">Password</label>
+              <div class="input-wrapper">
+                <mat-icon class="input-icon">lock</mat-icon>
+                <input [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Enter password">
+                <button type="button" class="visibility-btn" (click)="togglePassword($event)" [attr.aria-label]="'Hide password'">
+                  <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </div>
+              <div class="error-msg" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
                 Password is required
-              </mat-error>
-            </mat-form-field>
+              </div>
+            </div>
 
             <div *ngIf="errorMessage()" class="error-banner">
               <mat-icon>error_outline</mat-icon>
               <span>{{ errorMessage() }}</span>
             </div>
 
-            <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading()">
+            <button type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading()">
               <span *ngIf="!isLoading()">Sign In</span>
               <mat-spinner *ngIf="isLoading()" diameter="20" class="btn-spinner"></mat-spinner>
             </button>
           </form>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
       
       <div class="login-footer">
         <p>&copy; 2026 Moringa Plantation Farm. All rights reserved.</p>
@@ -90,9 +95,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at 50% 50%, #0d1527 0%, #060913 100%);
+      background: radial-gradient(circle at 50% 50%, #080f1e 0%, #03060c 100%);
       overflow: hidden;
-      font-family: var(--font-primary);
+      font-family: var(--font-sans);
     }
 
     .background-decor {
@@ -108,53 +113,55 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     .glow-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(140px);
-      opacity: 0.18;
+      filter: blur(150px);
+      opacity: 0.12;
     }
 
     .orb-1 {
-      width: 600px;
-      height: 600px;
+      width: 500px;
+      height: 500px;
       background: radial-gradient(circle, var(--color-primary) 0%, rgba(16, 185, 129, 0) 70%);
-      top: -200px;
-      left: -150px;
+      top: -100px;
+      left: -100px;
       animation: float 25s infinite alternate ease-in-out;
     }
 
     .orb-2 {
-      width: 700px;
-      height: 700px;
+      width: 600px;
+      height: 600px;
       background: radial-gradient(circle, var(--color-accent) 0%, rgba(6, 182, 212, 0) 70%);
-      bottom: -250px;
-      right: -150px;
+      bottom: -150px;
+      right: -100px;
       animation: float 30s infinite alternate-reverse ease-in-out;
     }
 
     .orb-3 {
-      width: 450px;
-      height: 450px;
-      background: radial-gradient(circle, var(--color-purple) 0%, rgba(168, 85, 247, 0) 70%);
-      top: 30%;
-      left: 40%;
-      animation: breathe 12s infinite ease-in-out;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--color-violet) 0%, rgba(168, 85, 247, 0) 70%);
+      top: 25%;
+      left: 45%;
+      animation: breathe 15s infinite ease-in-out;
     }
 
     .login-card {
       width: 100%;
-      max-width: 440px;
-      padding: 44px 36px;
+      max-width: 420px;
+      padding: 48px 40px;
       box-sizing: border-box;
       z-index: 1;
-      border: 1px solid rgba(255, 255, 255, 0.06) !important;
-      background: rgba(10, 17, 32, 0.55) !important;
-      backdrop-filter: blur(30px) saturate(140%) !important;
-      box-shadow: var(--shadow-lg) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      background: rgba(12, 20, 36, 0.45) !important;
+      backdrop-filter: blur(32px) saturate(150%) !important;
+      -webkit-backdrop-filter: blur(32px) saturate(150%) !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6) !important;
       border-radius: 24px !important;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .login-card:hover {
-      border-color: rgba(16, 185, 129, 0.25) !important;
-      box-shadow: var(--shadow-lg), 0 0 35px rgba(16, 185, 129, 0.1) !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(16, 185, 129, 0.08) !important;
     }
 
     .login-header {
@@ -162,89 +169,236 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 40px;
     }
 
     .logo-container {
-      width: 68px;
-      height: 68px;
-      border-radius: 20px;
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
       background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
-      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+      margin-bottom: 24px;
       animation: float 6s infinite alternate ease-in-out;
     }
 
     .logo-icon {
       color: white;
-      font-size: 36px;
-      width: 36px;
-      height: 36px;
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
     }
 
     .app-title {
-      font-size: 30px !important;
+      font-family: var(--font-display);
+      font-size: 28px !important;
       font-weight: 800 !important;
-      color: var(--text-primary);
+      color: var(--color-fg);
       letter-spacing: -0.8px;
       margin: 0 !important;
-      background: linear-gradient(to right, #ffffff, #e2e8f0);
+      background: linear-gradient(to right, #ffffff 30%, #a1a1aa 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .app-subtitle {
+      font-family: var(--font-sans);
       font-size: 14px !important;
-      color: var(--text-secondary) !important;
-      margin-top: 6px !important;
+      color: var(--color-fg-muted) !important;
+      margin-top: 8px !important;
       font-weight: 400;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.1px;
     }
 
     .login-content {
       padding: 0 !important;
     }
 
-    .form-field {
-      margin-bottom: 20px;
+    /* Custom Form Styling */
+    .input-group {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .input-label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px 0 44px;
+      box-sizing: border-box;
+      background: rgba(6, 9, 19, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      color: var(--color-fg);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-wrapper input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .input-wrapper input:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(6, 9, 19, 0.5);
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--color-primary);
+      background: rgba(6, 9, 19, 0.6);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+    }
+
+    .input-wrapper input:focus + .input-icon {
+      color: var(--color-primary);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-fg-subtle);
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      transition: color 0.2s ease;
+      pointer-events: none;
+    }
+
+    .visibility-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--color-fg-subtle);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 50%;
+      transition: color 0.2s ease;
+    }
+
+    .visibility-btn:hover {
+      color: var(--color-fg);
+    }
+
+    .visibility-btn mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .error-msg {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--color-danger);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Error State Styling */
+    .input-group.has-error .input-label {
+      color: var(--color-danger);
+    }
+
+    .input-group.has-error .input-wrapper input {
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    .input-group.has-error .input-wrapper input:focus {
+      border-color: var(--color-danger);
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.15);
+    }
+
+    .input-group.has-error .input-icon {
+      color: var(--color-danger);
     }
 
     .error-banner {
-      background-color: rgba(244, 63, 94, 0.08);
-      border: 1px solid rgba(244, 63, 94, 0.15);
-      border-radius: 10px;
+      background-color: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      border-radius: 12px;
       color: var(--color-danger);
       padding: 12px 16px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 13px;
-      font-family: var(--font-secondary);
+      font-family: var(--font-sans);
+    }
+
+    .error-banner mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
     }
 
     .submit-btn {
       width: 100%;
-      padding: 26px 0 !important;
-      font-size: 16px !important;
-      font-weight: 600 !important;
-      border-radius: 12px !important;
-      background: linear-gradient(90deg, var(--color-primary), #059669) !important;
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
-      transition: var(--transition-normal) !important;
+      height: 48px;
+      margin-top: 8px;
+      background: linear-gradient(90deg, var(--color-primary), #059669);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .submit-btn:hover:not([disabled]) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45) !important;
-      background: linear-gradient(90deg, var(--color-primary-hover), var(--color-primary)) !important;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4) !important;
+      background: linear-gradient(90deg, var(--color-primary-hover), var(--color-primary));
     }
 
     .submit-btn:active:not([disabled]) {
       transform: translateY(0);
+    }
+
+    .submit-btn[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.35);
     }
 
     .btn-spinner {
@@ -255,52 +409,24 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       margin-top: 32px;
       z-index: 1;
       font-size: 12px;
-      color: var(--text-muted);
-      font-family: var(--font-secondary);
+      color: var(--color-fg-subtle);
+      font-family: var(--font-sans);
       letter-spacing: 0.1px;
     }
 
-    ::ng-deep .mat-mdc-text-field-wrapper {
-      background-color: rgba(6, 9, 19, 0.5) !important;
-      border-radius: 12px !important;
-      transition: var(--transition-fast) !important;
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-10px); }
     }
 
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-      border-color: rgba(255, 255, 255, 0.05) !important;
-      border-width: 1px !important;
-      transition: var(--transition-fast) !important;
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.12; }
+      50% { transform: scale(1.05); opacity: 0.18; }
     }
 
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__leading,
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__notch,
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__trailing {
-      border-color: rgba(255, 255, 255, 0.15) !important;
-    }
-
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading,
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch,
-    ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
-      border-color: var(--color-primary) !important;
-      border-width: 1.5px !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field-label {
-      color: var(--text-muted) !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field-focus-active .mat-mdc-form-field-label {
-      color: var(--color-primary) !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field mat-icon {
-      color: var(--text-muted) !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field-focus-active mat-icon {
-      color: var(--color-primary) !important;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-3px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   `]
 })
