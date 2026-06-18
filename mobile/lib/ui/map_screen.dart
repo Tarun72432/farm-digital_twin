@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -47,8 +49,26 @@ class _MapScreenState extends State<MapScreen> {
       setState(() {
         _initialLocation = latLng;
       });
-    } catch (_) {}
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('GPS Location Error: ${e.toString()}'),
+            backgroundColor: Colors.redAccent,
+            duration: const Duration(seconds: 8),
+            action: SnackBarAction(
+              label: 'Settings',
+              textColor: Colors.white,
+              onPressed: () {
+                Geolocator.openAppSettings();
+              },
+            ),
+          ),
+        );
+      }
+    }
   }
+
 
   void _showMarkerInfo(BuildContext context, String title, String snippet) {
     showModalBottomSheet(
@@ -438,6 +458,8 @@ class _MapScreenState extends State<MapScreen> {
                                   options: MapOptions(
                                     initialCenter: _initialLocation,
                                     initialZoom: 16,
+                                    maxZoom: 17,
+                                    minZoom: 3,
                                     onTap: (tapPosition, latLng) => _handleMapTap(latLng, mapState),
                                   ),
                                   children: [
