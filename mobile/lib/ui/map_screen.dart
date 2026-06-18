@@ -391,7 +391,10 @@ class _MapScreenState extends State<MapScreen> {
                                       borderStrokeWidth: 2,
                                       isFilled: true,
                                     ));
+                                  }
                                 }
+
+
 
                                 // 7. Draw user's current GPS location marker
                                 markers.add(Marker(
