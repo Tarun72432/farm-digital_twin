@@ -442,13 +442,10 @@ class _MapScreenState extends State<MapScreen> {
                                   ),
                                   children: [
                                     TileLayer(
-                                      urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                                      userAgentPackageName: 'com.company.farmdigitaltwin',
+                                      urlTemplate: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                                      maxZoom: 20,
                                     ),
-                                    TileLayer(
-                                      urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-                                      userAgentPackageName: 'com.company.farmdigitaltwin',
-                                    ),
+
                                     PolygonLayer(polygons: polygons),
                                     PolylineLayer(polylines: polylines),
                                     MarkerLayer(markers: markers),
@@ -902,7 +899,8 @@ class _MapScreenState extends State<MapScreen> {
       final latLng = LatLng(position.latitude, position.longitude);
       
       // Move map to the current captured position
-      _mapController.move(latLng, 18);
+      _mapController.move(latLng, 17);
+
 
       // Trigger the asset forms dialog
       setState(() {
