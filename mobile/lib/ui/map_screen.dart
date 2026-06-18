@@ -458,7 +458,7 @@ class _MapScreenState extends State<MapScreen> {
                                   options: MapOptions(
                                     initialCenter: _initialLocation,
                                     initialZoom: 16,
-                                    maxZoom: 17,
+                                    maxZoom: 22,
                                     minZoom: 3,
                                     onTap: (tapPosition, latLng) => _handleMapTap(latLng, mapState),
                                   ),
@@ -466,12 +466,14 @@ class _MapScreenState extends State<MapScreen> {
                                     TileLayer(
                                       urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                                       userAgentPackageName: 'com.company.farmdigitaltwin',
-                                      maxZoom: 17,
+                                      maxZoom: 22,
+                                      maxNativeZoom: 18,
                                     ),
                                     TileLayer(
                                       urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
                                       userAgentPackageName: 'com.company.farmdigitaltwin',
-                                      maxZoom: 17,
+                                      maxZoom: 22,
+                                      maxNativeZoom: 18,
                                     ),
 
 
