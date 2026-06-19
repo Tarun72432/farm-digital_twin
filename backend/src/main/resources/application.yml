@@ -3,7 +3,7 @@ spring:
     name: farmdigitaltwin
 
   datasource:
-    url: jdbc:postgresql://localhost:5436/farm_twin
+    url: jdbc:postgresql://13.203.86.187:5436/farm_twin
     username: postgres
     password: Employee@123
     driver-class-name: org.postgresql.Driver
