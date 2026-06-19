@@ -10,6 +10,7 @@ import { IrrigationAssetsComponent } from './components/irrigation-assets/irriga
 import { InfrastructureComponent } from './components/infrastructure/infrastructure';
 import { ReportsComponent } from './components/reports/reports';
 import { SettingsComponent } from './components/settings/settings';
+import { Twin3dComponent } from './components/twin-3d/twin-3d';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'map', component: MapComponent },
+      { path: '3d-twin', component: Twin3dComponent },
       { path: 'farms', component: FarmsComponent },
       { path: 'trees', component: TreesComponent },
       { path: 'pipelines', component: PipelinesComponent },

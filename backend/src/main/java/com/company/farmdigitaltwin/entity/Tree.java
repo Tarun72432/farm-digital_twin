@@ -67,4 +67,16 @@ public class Tree {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
+
+    @jakarta.persistence.Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("farmId")
+    public Long getAssignedFarmId() {
+        return farm != null ? farm.getId() : null;
+    }
+
+    @jakarta.persistence.Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("farmName")
+    public String getAssignedFarmName() {
+        return farm != null ? farm.getName() : null;
+    }
 }

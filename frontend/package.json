@@ -20,10 +20,12 @@
     "@angular/material": "^22.0.1",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "@types/three": "^0.184.1",
     "apexcharts": "^5.15.0",
     "leaflet": "^1.9.4",
     "ng-apexcharts": "^2.4.0",
     "rxjs": "~7.8.0",
+    "three": "^0.184.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

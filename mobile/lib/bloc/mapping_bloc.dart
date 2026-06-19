@@ -67,6 +67,8 @@ class MappingBloc extends Bloc<MappingEvent, MappingState> {
   MappingBloc() : super(MappingState.initial()) {
     on<MapStartTrackingEvent>((event, emit) async {
       await _gpsSubscription?.cancel();
+      _gpsSubscription = null;
+      
       emit(state.copyWith(
         isTracking: true,
         geometryType: event.geometryType,
@@ -80,14 +82,6 @@ class MappingBloc extends Bloc<MappingEvent, MappingState> {
         points.add([pos.longitude, pos.latitude]);
         emit(state.copyWith(trackedPoints: points));
       } catch (_) {}
-
-      // Listen to coordinates stream from GPS
-      _gpsSubscription = _gpsService.getPositionStream().listen((Position position) {
-        add(MapAddPointEvent(
-          latitude: position.latitude,
-          longitude: position.longitude,
-        ));
-      });
     });
 
     on<MapAddPointEvent>((event, emit) {

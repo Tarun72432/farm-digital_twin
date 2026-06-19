@@ -1,5 +1,6 @@
 package com.company.farmdigitaltwin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.company.farmdigitaltwin.gis.GeometryDeserializer;
 import com.company.farmdigitaltwin.gis.GeometrySerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -17,6 +18,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Farm {
 
     @Id

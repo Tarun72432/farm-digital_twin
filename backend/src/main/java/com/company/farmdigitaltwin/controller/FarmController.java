@@ -37,14 +37,14 @@ public class FarmController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'FARM_MANAGER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'FARM_MANAGER', 'FIELD_OPERATOR')")
     @Operation(summary = "Create a new farm and calculate boundary area")
     public ResponseEntity<Farm> createFarm(@Valid @RequestBody FarmRequest request) {
         return new ResponseEntity<>(farmService.createFarm(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'FARM_MANAGER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'FARM_MANAGER', 'FIELD_OPERATOR')")
     @Operation(summary = "Update an existing farm's details and recalculate area")
     public ResponseEntity<Farm> updateFarm(@PathVariable Long id, @Valid @RequestBody FarmRequest request) {
         return ResponseEntity.ok(farmService.updateFarm(id, request));

@@ -56,6 +56,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
             <span matListItemTitle>GIS Interactive Map</span>
           </a>
 
+          <a mat-list-item routerLink="/3d-twin" routerLinkActive="active-link" class="nav-item">
+            <mat-icon matListItemIcon>3d_rotation</mat-icon>
+            <span matListItemTitle>3D Digital Twin</span>
+          </a>
+
           <div class="section-title">Farm Assets</div>
 
           <a mat-list-item routerLink="/farms" routerLinkActive="active-link" class="nav-item">

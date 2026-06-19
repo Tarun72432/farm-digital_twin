@@ -51,9 +51,9 @@ class TreeModel extends HiveObject {
     this.serverId,
   });
 
-  Map<String, dynamic> toJson(int resolvedFarmId) {
+  Map<String, dynamic> toJson() {
     return {
-      'farmId': resolvedFarmId,
+      'farmId': farmId,
       'treeNumber': treeNumber,
       'species': species ?? 'Moringa oleifera',
       'age': age,

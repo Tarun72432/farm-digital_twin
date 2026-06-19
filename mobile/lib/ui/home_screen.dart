@@ -151,75 +151,90 @@ class _HomeScreenState extends State<HomeScreen> {
                 BlocBuilder<SyncBloc, SyncState>(
                   builder: (context, syncState) {
                     final hasPending = syncState.pendingCount > 0;
-                    return Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E293B),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: hasPending ? Colors.amber.withOpacity(0.3) : Colors.white.withOpacity(0.05),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Sync Queue Status',
-                                style: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
-                              ),
-                              const SizedBox(height: 6),
-                              Row(
-                                children: [
-                                  Icon(
-                                    hasPending ? Icons.sync_problem : Icons.cloud_done,
-                                    color: hasPending ? Colors.amber : const Color(0xFF10B981),
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    hasPending 
-                                        ? '${syncState.pendingCount} Changes Pending' 
-                                        : 'All Assets Synced',
-                                    style: TextStyle(
-                                      color: hasPending ? Colors.amber : const Color(0xFF10B981),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const SyncScreen()),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E293B),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: hasPending ? Colors.amber.withOpacity(0.3) : Colors.white.withOpacity(0.05),
                           ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: hasPending ? Colors.amber : const Color(0xFF334155),
-                              foregroundColor: hasPending ? Colors.black : Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Sync Queue Status',
+                                  style: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      hasPending ? Icons.sync_problem : Icons.cloud_done,
+                                      color: hasPending ? Colors.amber : const Color(0xFF10B981),
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      hasPending 
+                                          ? '${syncState.pendingCount} Changes Pending' 
+                                          : 'All Assets Synced',
+                                      style: TextStyle(
+                                        color: hasPending ? Colors.amber : const Color(0xFF10B981),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                if (hasPending) ...[
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    'Tap card to view details/errors',
+                                    style: TextStyle(color: Color(0xFF64748B), fontSize: 11, fontStyle: FontStyle.italic),
+                                  ),
+                                ]
+                              ],
                             ),
-                            onPressed: syncState.isSyncing
-                                ? null
-                                : () {
-                                    if (hasPending) {
-                                      context.read<SyncBloc>().add(SyncTriggerEvent());
-                                    } else {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (_) => const SyncScreen()),
-                                      );
-                                    }
-                                  },
-                            child: syncState.isSyncing
-                                ? const SizedBox(
-                                    height: 18,
-                                    width: 18,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  )
-                                : Text(hasPending ? 'Sync Now' : 'View Logs'),
-                          )
-                        ],
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: hasPending ? Colors.amber : const Color(0xFF334155),
+                                foregroundColor: hasPending ? Colors.black : Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              ),
+                              onPressed: syncState.isSyncing
+                                  ? null
+                                  : () {
+                                      if (hasPending) {
+                                        context.read<SyncBloc>().add(SyncTriggerEvent());
+                                      } else {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (_) => const SyncScreen()),
+                                        );
+                                      }
+                                    },
+                              child: syncState.isSyncing
+                                  ? const SizedBox(
+                                      height: 18,
+                                      width: 18,
+                                      child: CircularProgressIndicator(strokeWidth: 2),
+                                    )
+                                  : Text(hasPending ? 'Sync Now' : 'View Logs'),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   },

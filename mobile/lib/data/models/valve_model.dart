@@ -47,9 +47,9 @@ class ValveModel extends HiveObject {
     this.serverId,
   });
 
-  Map<String, dynamic> toJson(int resolvedFarmId) {
+  Map<String, dynamic> toJson() {
     return {
-      'farmId': resolvedFarmId,
+      'farmId': farmId,
       'valveNumber': valveNumber,
       'type': type ?? 'MANUAL',
       'zone': zone,

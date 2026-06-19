@@ -47,7 +47,7 @@ class InfrastructureModel extends HiveObject {
     this.serverId,
   });
 
-  Map<String, dynamic> toJson(int resolvedFarmId) {
+  Map<String, dynamic> toJson() {
     dynamic coords = coordinates;
     if (geometryType == 'Polygon') {
       // GeoJSON Polygon coordinates must be double nested e.g., [ [ [lng, lat], ... ] ]
@@ -66,7 +66,7 @@ class InfrastructureModel extends HiveObject {
       coords = coordinates.cast<double>();
     }
     return {
-      'farmId': resolvedFarmId,
+      'farmId': farmId,
       'name': name,
       'type': type,
       'status': status ?? 'ACTIVE',

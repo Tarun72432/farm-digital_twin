@@ -51,9 +51,9 @@ class TankModel extends HiveObject {
     this.serverId,
   });
 
-  Map<String, dynamic> toJson(int resolvedFarmId) {
+  Map<String, dynamic> toJson() {
     return {
-      'farmId': resolvedFarmId,
+      'farmId': farmId,
       'name': name,
       'capacity': capacity,
       'material': material,
